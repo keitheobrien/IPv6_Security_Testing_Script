@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-##   Version 0.4
+##   Version 0.5
 
 #############################################################################
 ##                                                                         ##
@@ -27,8 +27,8 @@
 import sys
 import random
 from random import randint
-from scapy.all import *
-
+try: from scapy.all import *
+except print "[!] Scapy Error: Libraries not availble.  Is Scapy installed?"; sys.exit(0)
 
 def randomacaddr():
     return ':'.join(map(lambda x: "%02x" % x, [ 0x00, 0x16, 0x3e,randint(0x00, 0x7f),randint(0x00, 0xff),randint(0x00, 0xff) ]))
@@ -123,44 +123,48 @@ def tcp_fragment():
     send(pkt2)
     return()
 
+def main();
+    print('1. Send HbH Header Flood')
+    print('2. Send RH0 Packets')
+    print('3. Send Packets with two RH0 Headers')
+    print('4. RA deamon killer')
+    print('5. RA Flood')
+    print('6. Hide Layer 4 Info for ACL Bypass')
+    choice = raw_input('? ')
 
-print('1. Send HbH Header Flood')
-print('2. Send RH0 Packets')
-print('3. Send Packets with two RH0 Headers')
-print('4. RA deamon killer')
-print('5. RA Flood')
-print('6. Hide Layer 4 Info for ACL Bypass') 
-choice = raw_input('? ')
+    if "1" in choice:
+        psrc = raw_input("Enter source IPv6 address: ")
+        pdst = raw_input("Enter destination IPv6 address.  Be sure that the destination is not the device under test.  The device under test \
+        has to be a layer 3 hop between the source and destination IPv6 address in order to test CPU impact: ")
+        psport = input("Enter source UDP port: ")
+        pdport = input("Enter destination UDP port: ")
+        pnumpkts = input("Enter number of packets: ")
+        hbh_flood(psrc, pdst, psport, pdport, 'x*100', pnumpkts)
 
-if "1" in choice:
-    psrc = raw_input("Enter source IPv6 address: ")
-    pdst = raw_input("Enter destination IPv6 address.  Be sure that the destination is not the device under test.  The device under test \
-    has to be a layer 3 hop between the source and destination IPv6 address in order to test CPU impact: ")
-    psport = input("Enter source UDP port: ")
-    pdport = input("Enter destination UDP port: ")
-    pnumpkts = input("Enter number of packets: ")
-    hbh_flood(psrc, pdst, psport, pdport, 'x*100', pnumpkts)
+    if "2" in choice:
+        psrc = raw_input("Enter source IPv6 address: ")
+        print "Enter destination IPv6 address.  Be sure that the destination is not the device under test."
+        pdst = raw_input("The device under test has to be a layer 3 hop between the source and destination IPv6 address in order to test CPU impact: ")
+        psport = input("Enter source UDP port: ")
+        pdport = input("Enter destination UDP port: ")
+        router_address = raw_input("Enter address of the router under test. This address will be listed as a hop to visit in the RH: ")
+        print "Enter the number of segments left.  If Segments Left is zero the unit under test should ignore the RH and proceed to process the next header"
+        segleft = input("If the segments left is non-zero the unit under test should discard the RH and send an ICMP parameter program Code 0 to the source address")
+        pnumpkts = input("Enter number of packets: ")
+        routing_header(router_address, psrc, pdst, psport, pdport, segleft, pnumpkts)
 
-if "2" in choice:
-    psrc = raw_input("Enter source IPv6 address: ")
-    print "Enter destination IPv6 address.  Be sure that the destination is not the device under test."
-    pdst = raw_input("The device under test has to be a layer 3 hop between the source and destination IPv6 address in order to test CPU impact: ")
-    psport = input("Enter source UDP port: ")
-    pdport = input("Enter destination UDP port: ")
-    router_address = raw_input("Enter address of the router under test. This address will be listed as a hop to visit in the RH: ")
-    print "Enter the number of segments left.  If Segments Left is zero the unit under test should ignore the RH and proceed to process the next header"
-    segleft = input("If the segments left is non-zero the unit under test should discard the RH and send an ICMP parameter program Code 0 to the source address")
-    pnumpkts = input("Enter number of packets: ")
-    routing_header(router_address, psrc, pdst, psport, pdport, segleft, pnumpkts)
+    if "3" in choice:
+        multi_routing_header()
 
-if "3" in choice:
-    multi_routing_header()
+    if "4" in choice:
+        kill_ra()
 
-if "4" in choice:
-    kill_ra()
+    if "5" in choice:
+        flood_ra()
 
-if "5" in choice:
-    flood_ra()
+    if "6" in choice:
+        tcp_fragment()
 
-if "6" in choice:
-    tcp_fragment()
+
+if __name__=='__main__':
+    main()
