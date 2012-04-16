@@ -8,7 +8,8 @@
 ##                                                                         ##
 ## This tools requires installation of Scapy which can be found here:      ##
 ## http://www.secdev.org/projects/scapy/                                   ##
-## 																		   ##	
+## Minimum Scapy Version 2.2.0-dev
+## 																		   ##
 ## Copyright (C) 2012  Keith O'Brien   keith at keithobrien dot org        ##
 ##                                                                         ##
 ## This program is free software; you can redistribute it and/or modify it ##
