@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-##   Version 0.5
+
 
 #############################################################################
 ##                                                                         ##
@@ -24,6 +24,7 @@
 ##                                                                         ##
 #############################################################################
 
+__version__ = '0.6'
 
 import sys
 from random import randint
@@ -123,6 +124,9 @@ def tcp_fragment():
     return()
 
 def main():
+    """
+
+    """
     print('1. Send HbH Header Flood')
     print('2. Send RH0 Packets')
     print('3. Send Packets with two RH0 Headers')
@@ -142,12 +146,13 @@ def main():
 
     if "2" in choice:
         psrc = raw_input("Enter source IPv6 address: ")
-        print "Enter destination IPv6 address.  Be sure that the destination is not the device under test."
+        print """Enter destination IPv6 address.  Be sure that the destination is not the device under test."""
         pdst = raw_input("The device under test has to be a layer 3 hop between the source and destination IPv6 address in order to test CPU impact: ")
         psport = input("Enter source UDP port: ")
         pdport = input("Enter destination UDP port: ")
         router_address = raw_input("Enter address of the router under test. This address will be listed as a hop to visit in the RH: ")
-        print "Enter the number of segments left.  If Segments Left is zero the unit under test should ignore the RH and proceed to process the next header"
+        print """Enter the number of segments left.
+        If Segments Left is zero the unit under test should ignore the RH and proceed to process the next header"""
         segleft = input("If the segments left is non-zero the unit under test should discard the RH and send an ICMP parameter program Code 0 to the source address")
         pnumpkts = input("Enter number of packets: ")
         routing_header(router_address, psrc, pdst, psport, pdport, segleft, pnumpkts)
