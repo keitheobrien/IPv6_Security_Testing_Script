@@ -24,7 +24,7 @@
 ##                                                                         ##
 #############################################################################
 
-__version__ = '0.6'
+__version__ = '0.65'
 
 import sys
 from random import randint
@@ -101,7 +101,7 @@ def tcp_fragment():
     payload2 = ''
     for i in range(1280):
         payload2 = payload2 + 'B'
-    ### Create IPv6 Packet
+        ### Create IPv6 Packet
     ip6 = IPv6()
     ip6.dst = raw_input("Destination IPv6 Address: ")
     ip6.src = raw_input("Source IPv6 Address: ")
@@ -151,8 +151,8 @@ def main():
         psport = input("Enter source UDP port: ")
         pdport = input("Enter destination UDP port: ")
         router_address = raw_input("Enter address of the router under test. This address will be listed as a hop to visit in the RH: ")
-        print ("Enter the number of segments left. If Segments Left is zero the unit under test should ignore the RH and proceed to process the next header")
-        segleft = input("If the segments left is non-zero the unit under test should discard the RH and send an ICMP parameter program Code 0 to the source address")
+        print ("Enter the number of segments left. If the number of segments left is zero, the unit under test should ignore the RH and proceed to process the next header. If the segments left is non-zero the unit under test should discard the RH and send an ICMP parameter program Code 0 to the source address:")
+        segleft = input()
         pnumpkts = input("Enter number of packets: ")
         routing_header(router_address, psrc, pdst, psport, pdport, segleft, pnumpkts)
 
