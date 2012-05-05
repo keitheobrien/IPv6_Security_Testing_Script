@@ -124,9 +124,7 @@ def tcp_fragment():
     return()
 
 def main():
-    """
 
-    """
     print('1. Send HbH Header Flood')
     print('2. Send RH0 Packets')
     print('3. Send Packets with two RH0 Headers')
